@@ -393,7 +393,26 @@ endif(DL_LIBRARIES)
                 "smart cctv requires darknet but it was not found")
     endif(DARKNET_LIB)
 
+    find_library(CUDA_LIBS NAMES cuda cudart curand HINTS /usr/local/cuda/lib64 /usr/lib/cuda/lib64)
+    if(CUDA_LIBS)
+        message(STATUS "CUDA LIBs found at ${DARKNET_LIB}")
+	list(APPEND OZ_BIN_LIBS "${CUDA_LIBS}")
+    else(CUDA_LIBS)
+        message(FATAL_ERROR
+                "smart cctv requires cuda but it was not found")
+    endif(CUDA_LIBS)
 
+    find_library(CUDNN_LIB NAMES cudnn HINTS /usr/lib/x86_64-linux-gnu /usr/local/cuda/lib64 /usr/lib/cuda/lib64)
+    if(CUDNN_LIB)
+	message(STATUS "CUDNN LIB found at ${CUDNN_LIB}")
+	list(APPEND OZ_BIN_LIBS "${CUDNN_LIB}")
+    else(CUDNN_LIBS)
+        message(FATAL_ERROR
+                "smart cctv requires cudnn but it was not found")
+    endif(CUDNN_LIBS)
+
+    
+	
 
 # check include files
 #set (INCVARLIST "alloca;fcntl;inttypes;limits;memory;netdb;string;strings;execinfo;stdbool;stddef;stdint;syslog;unistd;values;\"sys/types\";\"sys/time\";\"sys/stat\";\"sys/socket\";\"sys/select\";\"sys/param\";\"sys/mman\";\"linux/videodev2\";\"sys/ioctl\";\"netinet/in\"" )
