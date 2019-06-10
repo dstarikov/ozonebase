@@ -67,4 +67,4 @@ ENV INSTALLDIR=/usr/local
 RUN mkdir /src && cd /src && git clone https://github.com/dstarikov/ozonebase && cd ozonebase && ./ozone-build.sh
 
 ENV LD_LIBRARY_PATH=/usr/local/lib/
-CMD /usr/local/bin/yolo_home_security
+CMD cd /usr/local/bin && ./yolo_home_security
