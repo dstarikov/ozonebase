@@ -61,6 +61,7 @@ else # hacky stuff for OSX
 fi
 
 mkdir -p $INSTALLDIR
+mkdir -p $INSTALLDIR/bin
 
 git submodule update --init --recursive
 echo "==================== Building OPENH264 ====================="
@@ -69,6 +70,8 @@ echo "==================== Building FFMPEG ====================="
 ( cd externals/ffmpeg && PKG_CONFIG_PATH=`pkg-config --variable pc_path pkg-config`:$INSTALLDIR/lib/pkgconfig ./configure --enable-shared --enable-libopenh264 --enable-libfreetype --enable-libfontconfig ${usev4l}  --prefix=$INSTALLDIR && make install )
 echo "==================== Building DLIB ====================="
 ( cd externals/dlib && mkdir -p build && cd build && cmake .. ${forcecompiler} -DCMAKE_PREFIX_PATH=$INSTALLDIR -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DCMAKE_INSTALL_RPATH=$INSTALLDIR/lib -DUSE_AVX_INSTRUCTIONS=ON -DCMAKE_VERBOSE_MAKEFILE=ON && cmake --build . --config ${DLIBBUILDMODE}  && make install)
+echo "==================== Building Darknet ====================="
+( cd externals/darknet && make && cp libdarknet.so $INSTALLDIR/lib && cp include/darknet.h $INSTALLDIR/include && cp -R data/ $INSTALLDIR/bin/data && cp -R cfg/ $INSTALLDIR/bin/cfg && wget -O $INSTALLDIR/bin/yolov3.weights https://pjreddie.com/media/files/yolov3.weights )
 echo "==================== Building JSON ===================="
 ( cmake ${forcecompiler} -DCMAKE_INCLUDE_PATH=$INSTALLDIR/include -DCMAKE_PREFIX_PATH=$INSTALLDIR  -DCMAKE_VERBOSE_MAKEFILE=ON -DCMAKE_INSTALL_PREFIX=$INSTALLDIR -DCMAKE_INSTALL_RPATH=$INSTALLDIR/lib  . && make install )
 echo "==================== Building OZONE ====================="

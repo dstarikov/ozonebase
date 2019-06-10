@@ -331,7 +331,7 @@ endif(DL_LIBRARIES)
     endif(SWRESAMPLE_LIBRARIES)
 
     # dlib (using find_library and find_path)
-    find_library(DLIB_LIBRARIES NAMES dlib PATHS ${FFMPEG_LIBDIR}  )
+    find_library(DLIB_LIBRARIES NAMES dlib PATHS ${FFMPEG_LIBDIR}  ) 
     if(DLIB_LIBRARIES)
         message (STATUS "DLIB found at  ${DLIB_LIBRARIES}")
         set(HAVE_LIBDLIB 1)
@@ -382,6 +382,17 @@ endif(DL_LIBRARIES)
     else(OPENALPR_LIBRARIES)
         message(WARNING "**** oZone uses OpenALPR for license plate recognition. It was not found on your system, so building without it.***") 
     endif(OPENALPR_LIBRARIES)
+
+    find_library(DARKNET_LIB NAMES darknet PATHS $ENV{INSTALLDIR} ) 
+    if(DARKNET_LIB)
+    	message(STATUS "DARKNET LIB found at ${DARKNET_LIB}")
+	list(APPEND OZ_BIN_LIBS "${DARKNET_LIB}")
+	mark_as_advanced(FORCE DARKNET_LIB)
+    else(DARKNET_LIB)
+        message(FATAL_ERROR
+                "smart cctv requires darknet but it was not found")
+    endif(DARKNET_LIB)
+
 
 
 # check include files
@@ -476,6 +487,7 @@ add_subdirectory(src/libimg)
 add_subdirectory(src/processors)
 add_subdirectory(src/protocols)
 add_subdirectory(src/providers)
+add_subdirectory(src/yolo_security)
 
 # Process the example subdirectory last, if it has been selected for build
 if (OZ_EXAMPLES)

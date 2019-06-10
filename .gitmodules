@@ -8,6 +8,11 @@
 [submodule "externals/dlib"]
 	path = externals/dlib
 	url = https://github.com/davisking/dlib.git
+	branch = master
+[submodule "externals/darknet"]
+	path = externals/darknet
+	url = https://github.com/dstarikov/darknet.git
+	branch = master
 [submodule "externals/json"]
 	path = externals/json
 	url = https://github.com/nlohmann/json.git
