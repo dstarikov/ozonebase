@@ -3,7 +3,7 @@
 set(OZ_PROCESSORS_SRC_FILES
     ozAVFilter.cpp ozDelayBuffer.cpp ozFaceDetector.cpp ozFilterSwapUV.cpp ozImageConvert.cpp ozImageScale.cpp
     ozImageTimestamper.cpp ozInputFallback.cpp ozMotionDetector.cpp ozMatrixVideo.cpp
-    ozRateLimiter.cpp ozShapeDetector.cpp ozSignalChecker.cpp ozVideoFilter.cpp ozYOLOv3.cpp
+    ozRateLimiter.cpp ozShapeDetector.cpp ozSignalChecker.cpp ozVideoFilter.cpp myYOLOv3.cpp
     myIdentityFilter.cpp
    )
 
@@ -11,7 +11,7 @@ set(OZ_PROCESSORS_SRC_FILES
 set(OZ_PROCESSORS_HDR_FILES
     ozAVFilter.h ozDelayBuffer.h ozFaceDetector.h ozFilterSwapUV.h ozImageConvert.h ozImageScale.h
     ozImageTimestamper.h ozInputFallback.h ozMotionDetector.h ozMatrixVideo.h
-    ozRateLimiter.h ozShapeDetector.h ozSignalChecker.h ozVideoFilter.h ozYOLOv3.h myIdentityFilter.h
+    ozRateLimiter.h ozShapeDetector.h ozSignalChecker.h ozVideoFilter.h myYOLOv3.h myIdentityFilter.h
    )
 
 if (HAVE_LIBCOPENALPR)
