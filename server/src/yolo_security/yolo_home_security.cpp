@@ -8,16 +8,13 @@
 #include "../processors/ozImageScale.h"
 #include "../processors/ozAVFilter.h"
 #include "../processors/ozMatrixVideo.h"
-#include "../processors/ozYOLOv3.h"
 #include "../protocols/ozHttpController.h"
+#include "../processors/myYOLOv3.h"
 #include "../processors/myIdentityFilter.h"
 
 #include "../libgen/libgenDebug.h"
 
 #include <iostream>
-
-//
-//
 
 bool feedCompare(const FramePtr &frame, const FeedConsumer *consumer) {
     if (frame->originator()->name() == consumer->name()) {
@@ -28,14 +25,7 @@ bool feedCompare(const FramePtr &frame, const FeedConsumer *consumer) {
 }
 int main( int argc, const char *argv[] )
 {
-    debugInitialise( "starter-example", "", 0 );
-
-    std::cout << " ---------------------- Starter Example ------------------\n"
-            " do a export DBG_PRINT=0/1 to turn off/on logs\n"
-            " once running, load up starter-example.html in your browser\n"
-            " You should see a traffic cam window as well as motion detection frames in another\n"
-            " in real-time\n";
-
+    debugInitialise( "yolo security", "", 0 );
     Info( "Starting" );
 
     avInit();
@@ -57,6 +47,7 @@ int main( int argc, const char *argv[] )
     app.addThread( &officeraw );
     app.addThread( &northwestraw );
 
+    // Limit the frame rate
     RateLimiter southeast(15, southeastraw);
     RateLimiter southwest(15, southwestraw);
     RateLimiter backpatio(15, backpatioraw);
@@ -71,7 +62,7 @@ int main( int argc, const char *argv[] )
     app.addThread( &office);
     app.addThread( &northwest);
 
-    // object detection on six cameras
+    // Run Object detection on six cameras
     YOLODetector yolo("yolo", 6);
     yolo.registerProvider(southwest);
     yolo.registerProvider(southeast);
@@ -80,7 +71,7 @@ int main( int argc, const char *argv[] )
     yolo.registerProvider(office);
     yolo.registerProvider(northwest);
 
-    // demultiplexes object detection output
+    // Demultiplex object detection output
     IdentityFilter sefilter(southeast.name(), yolo, gQueuedVideoLink);
     IdentityFilter swfilter(southwest.name(), yolo, gQueuedVideoLink);
     IdentityFilter bpfilter(backpatio.name(), yolo, gQueuedVideoLink);

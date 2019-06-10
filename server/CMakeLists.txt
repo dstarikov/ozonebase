@@ -383,7 +383,37 @@ endif(DL_LIBRARIES)
         message(WARNING "**** oZone uses OpenALPR for license plate recognition. It was not found on your system, so building without it.***") 
     endif(OPENALPR_LIBRARIES)
 
-    find_library(DARKNET_LIB NAMES darknet PATHS $ENV{INSTALLDIR} ) 
+    find_library(CUDA_LIBS NAMES curand HINTS /usr/local/cuda/lib64 /usr/lib/cuda/lib64)
+    if(CUDA_LIBS)
+	message(STATUS "CUDA LIBs found at ${CUDA_LIBS}")
+	list(APPEND OZ_BIN_LIBS "${CUDA_LIBS}")
+	mark_as_advanced(FORCE CUDA_LIBS)
+    else(CUDA_LIBS)
+        message(FATAL_ERROR
+                "smart cctv requires cuda but it was not found")
+    endif(CUDA_LIBS)
+
+    find_library(CUDA_RT NAMES cudart HINTS /usr/local/cuda/lib64 /usr/lib/cuda/lib64)
+    if(CUDA_RT)
+	message(STATUS "CUDA runtime found at ${CUDA_RT}")
+	link_directories("${CUDA_RT}")
+	mark_as_advanced(FORCE CUDA_RT)
+    else(CUDA_RT)
+        message(FATAL_ERROR
+                "smart cctv requires cudart but it was not found")
+    endif(CUDA_RT)
+
+    find_library(CUDNN_LIB NAMES cudnn HINTS /usr/lib/x86_64-linux-gnu /usr/local/cuda/lib64 /usr/lib/cuda/lib64)
+    if(CUDNN_LIB)
+	message(STATUS "CUDNN LIB found at ${CUDNN_LIB}")
+	link_directories("${CUDNN_LIB}")
+	mark_as_advanced(FORCE CUDNN_LIBRARIES)
+    else(CUDNN_LIB)
+        message(FATAL_ERROR
+                "smart cctv requires cudnn but it was not found")
+    endif(CUDNN_LIB)
+
+    find_library(DARKNET_LIB NAMES darknet HINTS ../externals/darknet ) 
     if(DARKNET_LIB)
     	message(STATUS "DARKNET LIB found at ${DARKNET_LIB}")
 	list(APPEND OZ_BIN_LIBS "${DARKNET_LIB}")
@@ -394,6 +424,8 @@ endif(DL_LIBRARIES)
     endif(DARKNET_LIB)
 
 
+    
+	
 
 # check include files
 #set (INCVARLIST "alloca;fcntl;inttypes;limits;memory;netdb;string;strings;execinfo;stdbool;stddef;stdint;syslog;unistd;values;\"sys/types\";\"sys/time\";\"sys/stat\";\"sys/socket\";\"sys/select\";\"sys/param\";\"sys/mman\";\"linux/videodev2\";\"sys/ioctl\";\"netinet/in\"" )
@@ -490,9 +522,9 @@ add_subdirectory(src/providers)
 add_subdirectory(src/yolo_security)
 
 # Process the example subdirectory last, if it has been selected for build
-if (OZ_EXAMPLES)
-    add_subdirectory(src/examples) 
-endif (OZ_EXAMPLES)
+#if (OZ_EXAMPLES)
+#    add_subdirectory(src/examples) 
+#endif (OZ_EXAMPLES)
 
 # Print optional libraries detection status
 message(STATUS "Optional libraries found:${optlibsfound}")
