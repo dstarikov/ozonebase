@@ -17,10 +17,13 @@ class DirectVideoFilter : public VideoConsumer, public VideoProvider
 CLASSID(DirectVideoFilter);
 
 public:
+    std::string& filter_identity;
     DirectVideoFilter( AudioVideoProvider &provider );
+    DirectVideoFilter( AudioVideoProvider &provider , std::string& identity);
     ~DirectVideoFilter();
 
     bool queueFrame( const FramePtr &framePtr, FeedProvider *provider );
+    static bool sameIdVideoFrames( const FramePtr &frame, const FeedConsumer * );
 
     uint16_t width() const { return( videoProvider()->width() ); }
     uint16_t height() const { return( videoProvider()->height() ); }

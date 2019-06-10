@@ -17,6 +17,12 @@ public:
         mAlarmed( alarmed )
     {
     }
+    AlarmFrame( VideoProvider *provider, const std::string &src_name, uint64_t id, uint64_t timestamp, const ByteBuffer &buffer, bool alarmed ) :
+        VideoFrame( provider, id, timestamp, buffer ),
+        mAlarmed( alarmed )
+    {
+        src = src_name;
+    }
     //AlarmFrame( VideoProvider *provider, uint64_t id, uint64_t timestamp, const uint8_t *buffer, size_t size );
     AlarmFrame( VideoProvider *provider, const FramePtr &parent, uint64_t id, uint64_t timestamp, const ByteBuffer &buffer, bool alarmed ) :
         VideoFrame( provider, parent, id, timestamp, buffer ),

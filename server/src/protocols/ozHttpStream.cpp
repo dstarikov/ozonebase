@@ -1,6 +1,6 @@
 #include "../base/oz.h"
 #include "ozHttpStream.h"
-
+#include <iostream>
 #include "ozHttp.h"
 #include "ozHttpSession.h"
 #include "../base/ozConnection.h"
@@ -59,6 +59,8 @@ int HttpStream::run()
         {
             for ( FrameQueue::iterator iter = mFrameQueue.begin(); iter != mFrameQueue.end(); iter++ )
             {
+
+                FramePtr p = *iter;
                 sendFrame( writeable, *iter );
                 //delete *iter;
             }

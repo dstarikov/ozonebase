@@ -3,6 +3,7 @@
 
 #include "../base/ozFeedFrame.h"
 #include <sys/time.h>
+#include <iostream>
 
 /**
 * @brief 
@@ -13,6 +14,33 @@ DirectVideoFilter::DirectVideoFilter( AudioVideoProvider &provider ) :
     VideoConsumer( cClass(), provider, FeedLink( FEED_QUEUED, AudioVideoProvider::videoFramesOnly ) ),
     VideoProvider( cClass(), provider.name() )
 {
+}
+
+/**
+* @brief 
+*
+* @param frame
+* @param 
+*
+* @return 
+*/
+static bool DirectVideoFilter::sameIdVideoFrames( const FramePtr &frame, const FeedConsumer * c)
+{
+    const VideoFrame *videoFrame = dynamic_cast<const VideoFrame *>(frame.get());
+    std::cout << "frame id: " << videoFrame->originator()->identity() << ", consumer identity " << c->identity() << std::endl;
+    if (videoFrame != NULL && videoFrame->originator()->identity() == c->identity()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+DirectVideoFilter::DirectVideoFilter( AudioVideoProvider &provider, std::string &identity ) :
+    VideoConsumer( cClass(), provider.name() ),
+    VideoProvider( cClass(), provider.name() )
+{
+    FeedLink fl(FeedLinkType::FEED_QUEUED, DirectVideoFilter::sameIdVideoFrames);
+    registerProvider(provider, fl);
 }
 
 /**
@@ -43,7 +71,7 @@ bool DirectVideoFilter::queueFrame( const FramePtr &framePtr, FeedProvider *prov
 * @param provider
 */
 QueuedVideoFilter::QueuedVideoFilter( AudioVideoProvider &provider ) :
-    VideoConsumer( cClass(), provider, FeedLink( FEED_QUEUED, AudioVideoProvider::videoFramesOnly ) ),
+    VideoConsumer( cClass(), provider, FeedLink( FEED_QUEUED, std::list<FeedComparator> {AudioVideoProvider::videoFramesOnly} ) ),
     VideoProvider( cClass(), provider.name() ),
     Thread( identity() )
 {

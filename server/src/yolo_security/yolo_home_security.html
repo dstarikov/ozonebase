@@ -1,0 +1,138 @@
+<html>
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+</head>
+
+<body>
+    <div ng-app="starter" ng-controller="starterController">
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="http://ozone.network">oZone.Network</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Demo</a></li>
+                    <li><a href="https://github.com/ozonesecurity/ozonebase/blob/master/server/src/examples/starter_example.html">Source Code</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="page-header">
+                <h1>oZone Server Framework live example</h1>
+            </div>
+
+
+            <div class="alert alert-info" role="alert">
+                <span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span> Live RTSP feeds, auto-converted to MJPEG for browser display, along with live motion tracking
+            </div>
+            <div class="row">
+                <!-- live frames -->
+                <div class="col-sm-6">
+                    <figure class="figure">
+                        <figcaption class="bg-success figure-caption text-xs-right">SouthEast Camera: Live Feed</figcaption>
+                        <img class="figure-img img-fluid" src="{{baseurl}}/watch/southeast" />
+                    </figure>
+                </div>
+                <div class="col-sm-6">
+                    <figure class="figure">
+                        <figcaption class="bg-info figure-caption text-xs-right">SouthWest Camera: Live Feed</figcaption>
+                        <img class="figure-img img-fluid" src="{{baseurl}}/watch/southwest" />
+                    </figure>
+                </div>
+            </div>
+            <div class="row">
+                <!-- debug frames -->
+                <div class="col-sm-6">
+                    <figure class="figure">
+                        <figcaption class="bg-success figure-caption text-xs-right">Object detection on SouthEast Camera</figcaption>
+                        <img class="figure-img img-fluid" src="{{baseurl}}/detect/yolo_southeast" />
+                    </figure>
+                </div>
+                <div class="col-sm-6">
+                    <figure class="figure">
+                        <figcaption class="bg-info figure-caption text-xs-right">Object detection on SouthWest Camera</figcaption>
+                        <img class="figure-img img-fluid" src="{{baseurl}}/detect/yolo_southwest" />
+                    </figure>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <figure class="figure">
+                        <figcaption class="bg-info figure-caption text-xs-right">Back Patio Camera: Live Feed</figcaption>
+                        <img class="figure-img img-fluid" src="{{baseurl}}/watch/backpatio" />
+                    </figure>
+                </div>
+                <div class="col-sm-6">
+                    <figure class="figure">
+                        <figcaption class="bg-info figure-caption text-xs-right">Front Entry Camera: Live Feed</figcaption>
+                        <img class="figure-img img-fluid" src="{{baseurl}}/watch/frontentry" />
+                    </figure>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <figure class="figure">
+                        <figcaption class="bg-info figure-caption text-xs-right">Object detection on Back Patio Camera</figcaption>
+                        <img class="figure-img img-fluid" src="{{baseurl}}/detect/yolo_backpatio" />
+                    </figure>
+                </div>
+                <div class="col-sm-6">
+                    <figure class="figure">
+                        <figcaption class="bg-success figure-caption text-xs-right">Object detection on Front Entry Camera</figcaption>
+                        <img class="figure-img img-fluid" src="{{baseurl}}/detect/yolo_frontentry" />
+                    </figure>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <figure class="figure">
+                        <figcaption class="bg-info figure-caption text-xs-right">Office Camera: Live Feed</figcaption>
+                        <img class="figure-img img-fluid" src="{{baseurl}}/watch/office" />
+                    </figure>
+                </div>
+                <div class="col-sm-6">
+                    <figure class="figure">
+                        <figcaption class="bg-info figure-caption text-xs-right">NorthWest Camera: Live Feed</figcaption>
+                        <img class="figure-img img-fluid" src="{{baseurl}}/watch/northwest" />
+                    </figure>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <figure class="figure">
+                        <figcaption class="bg-info figure-caption text-xs-right">Object detection on Office Camera</figcaption>
+                        <img class="figure-img img-fluid" src="{{baseurl}}/detect/yolo_office" />
+                    </figure>
+                </div>
+                <div class="col-sm-6">
+                    <figure class="figure">
+                        <figcaption class="bg-info figure-caption text-xs-right">Object detection on NorthWest Camera</figcaption>
+                        <img class="figure-img img-fluid" src="{{baseurl}}/detect/yolo_northwest" />
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    angular.module('starter', [])
+   .controller('starterController', function($scope) {
+        // change the IP address to point to your system
+       $scope.baseurl = "http://10.10.10.10:9292";
+       $scope.w = "2400px";
+});
+
+    </script>
+</body>
+
+</html>

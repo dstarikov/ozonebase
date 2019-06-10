@@ -40,8 +40,8 @@ public:
 
     const Coord centre() const
     {
-        int midX = int(round(mLo.x()+(mHi.x()/2.0)));
-        int midY = int(round(mLo.y()+(mHi.y()/2.0)));
+        int midX = int(round((mLo.x()+mHi.x())/2.0));
+        int midY = int(round((mLo.y()+mHi.y())/2.0));
         return( Coord( midX, midY ) );
     }
     bool inside( const Coord &coord ) const

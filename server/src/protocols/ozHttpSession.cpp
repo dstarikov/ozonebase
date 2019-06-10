@@ -115,6 +115,9 @@ bool HttpSession::recvRequest( HttpConnection *connection, const std::string &re
         }
         if ( width == -1 || height == -1 )
         {
+            if (requestUrl.find("detect") != std::string::npos) {
+                int a = 1;
+            }
             const VideoProvider *videoProvider = dynamic_cast<const VideoProvider *>(streamProvider);
             width = videoProvider->width();
             height = videoProvider->height();

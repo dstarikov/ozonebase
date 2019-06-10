@@ -778,7 +778,9 @@ public:
     void fill( Rgb colour, const Coord &point );
     void fill( Rgb colour, const Box &limits, unsigned char density=1 );
     void fill( Rgb colour, const Polygon &polygon, unsigned char density=1 );
+    void fill(unsigned char r, unsigned char g, unsigned char b, const Coord &point);
 
+    void outline( Rgb colour, int loX, int loY, int hiX, int hiY) ;
     void outline( Rgb colour, const Box &box );
     void outline( Rgb colour, const Polygon &polygon );
 

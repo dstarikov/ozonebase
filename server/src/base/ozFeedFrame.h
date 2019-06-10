@@ -26,6 +26,7 @@ class FeedFrame
 {
 public:
     typedef enum { FRAME_TYPE_DATA, FRAME_TYPE_VIDEO, FRAME_TYPE_AUDIO } FeedType;     ///< Types of frame. More can be added here if necessary
+    std::string src = "";
 
 private:
     FeedProvider   *mProvider;      ///< Pointer to provider of this frame

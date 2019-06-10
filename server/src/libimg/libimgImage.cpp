@@ -9495,6 +9495,99 @@ void Image::fill( Rgb colour, unsigned char density )
 * @param colour
 * @param point
 */
+void Image::fill(unsigned char colR, unsigned char colG, unsigned char colB, const Coord &point )
+{
+    int x = point.x();
+    int y = point.y();
+
+    switch( mFormat )
+    {
+        case FMT_GREY :
+        {
+            unsigned char colY;
+            if (colR == 255 && colR == colG && colG == colB)
+                colY = WHITE;
+            else if (colR = 0 && colR == colG && colG == colB)
+                colY = BLACK;
+            else
+                colY = RGB2YUVJ_Y(colR,colG,colB);
+            unsigned char *p = mBuffer.data()+((y*mWidth)+x);
+            *p = colY;
+            break;
+        }
+        case FMT_GREY16 :
+        {
+            unsigned char colY;
+            if (colR == 255 && colR == colG && colG == colB)
+                colY = WHITE;
+            else if (colR = 0 && colR == colG && colG == colB)
+                colY = BLACK;
+            else
+                colY = RGB2YUVJ_Y(colR,colG,colB);
+            unsigned char *p = mBuffer.data()+(mPixelStep*((y*mWidth)+x));
+            *p = colY;
+            *(p+1) = 0;
+            break;
+        }
+        case FMT_RGB :
+        {
+            unsigned char *p = mBuffer.data()+(mPixelStep*((y*mWidth)+x));
+            RED(p) = colR;
+            GREEN(p) = colG;
+            BLUE(p) = colB;
+            break;
+        }
+        case FMT_RGB48 :
+        {
+            unsigned char *p = mBuffer.data()+(mPixelStep*((y*mWidth)+x));
+            RED16(p) = colR;
+            GREEN16(p) = colG;
+            BLUE16(p) = colB;
+            *(p+1) = *(p+3) = *(p+5) = 0;
+            break;
+        }
+        case FMT_YUV :
+        case FMT_YUVJ :
+        {
+            RGB2YUV &convFuncs = (mColourSpace==CS_YUV)?smRGB2YUV:smRGB2YUVJ;
+            unsigned char colY = convFuncs.Y(colR,colG,colB);
+            unsigned char colU = convFuncs.U(colR,colG,colB);
+            unsigned char colV = convFuncs.V(colR,colG,colB);
+            unsigned char *p = mBuffer.data()+(mPixelStep*((y*mWidth)+x));
+            *(p) = colY;
+            *(p+1) = colU;
+            *(p+2) = colV;
+            break;
+        }
+        case FMT_YUVP :
+        case FMT_YUVJP :
+        {
+            RGB2YUV &convFuncs = (mColourSpace==CS_YUV)?smRGB2YUV:smRGB2YUVJ;
+            unsigned char colY = convFuncs.Y(colR,colG,colB);
+            unsigned char colU = convFuncs.U(colR,colG,colB);
+            unsigned char colV = convFuncs.V(colR,colG,colB);
+            unsigned char *pY = mBuffer.data()+(mPixelStep*((y*mWidth)+x));
+            unsigned char *pU = pY + mPlaneSize;
+            unsigned char *pV = pU + mPlaneSize;
+            *pY = colY;
+            *pU = colU;
+            *pV = colV;
+            break;
+        }
+        default :
+        {
+            throw Exception( stringtf( "Unexpected format %d found when filling image", mFormat ) );
+            break;
+        }
+    }
+}
+
+/**
+* @brief 
+*
+* @param colour
+* @param point
+*/
 void Image::fill( Rgb colour, const Coord &point )
 {
     int x = point.x();
@@ -9949,6 +10042,85 @@ void Image::fill( Rgb colour, const Polygon &polygon, unsigned char density )
 * @param colour
 * @param box
 */
+void Image::outline( Rgb colour, int loX, int loY, int hiX, int hiY) 
+{
+    unsigned char colR = RGB_RED_VAL(colour);
+    unsigned char colG = RGB_GREEN_VAL(colour);
+    unsigned char colB = RGB_BLUE_VAL(colour);
+
+    RGB2YUV &convFuncs = (mColourSpace==CS_YUV)?smRGB2YUV:smRGB2YUVJ;
+    unsigned char colY = convFuncs.Y(colR,colG,colB);
+    unsigned char colU = convFuncs.U(colR,colG,colB);
+    unsigned char colV = convFuncs.V(colR,colG,colB);
+
+    if ( mFormat == FMT_GREY || mFormat == FMT_GREY16 || mFormat == FMT_YUVJ || mFormat == FMT_YUVJP )
+    {
+        if ( colour == RGB_WHITE )
+            colY = WHITE;
+        else if ( colour == RGB_BLACK )
+            colY = BLACK;
+    }
+
+    for ( int y = loY; y <= hiY; y++ )
+    {
+        unsigned char *p = mBuffer.data()+(((y*mWidth)+loX)*mPixelStep);
+        for ( int x = loX; x <= hiX; )
+        {
+            switch( mFormat )
+            {
+                case FMT_GREY16 :
+                    p[1] = 0;
+                case FMT_GREY :
+                    p[0] = colY;
+                    break;
+                case FMT_RGB :
+                    p[0] = colR;
+                    p[1] = colG;
+                    p[2] = colB;
+                    break;
+                case FMT_RGB48 :
+                    p[0] = colR;
+                    p[1] = 0;
+                    p[2] = colG;
+                    p[3] = 0;
+                    p[4] = colB;
+                    p[5] = 0;
+                    break;
+                case FMT_YUV :
+                case FMT_YUVJ :
+                    p[0] = colY;
+                    p[1] = colU;
+                    p[2] = colV;
+                    break;
+                case FMT_YUVP :
+                case FMT_YUVJP :
+                    p[0] = colY;
+                    p[mPlaneSize] = colU;
+                    p[2*mPlaneSize] = colV;
+                    break;
+                case FMT_UNDEF :
+                    break;
+            }
+            if ( y != loY && y != hiY )
+            {
+                x += hiX - loX -1;
+                p += (hiX - loX) * mPixelStep;
+            }
+            else
+            {
+                x++;
+                p += mPixelStep;
+            }
+        }
+    }
+}
+
+/**
+* @brief 
+*
+* @param colour
+* @param box
+*/
 void Image::outline( Rgb colour, const Box &box )
 {
     unsigned char colR = RGB_RED_VAL(colour);
@@ -10026,7 +10198,6 @@ void Image::outline( Rgb colour, const Box &box )
         }
     }
 }
-
 /**
 * @brief 
 *
