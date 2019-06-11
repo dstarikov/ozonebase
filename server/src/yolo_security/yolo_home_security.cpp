@@ -102,12 +102,12 @@ int main( int argc, const char *argv[] )
     app.addThread( &listener );
 
     HttpController httpController( "watch", 9292 );
-    // httpController.addStream( "watch", southeastraw);
-    // httpController.addStream( "watch", southwestraw);
-    // httpController.addStream( "watch", backpatioraw);
-    // httpController.addStream( "watch", frontentryraw);
-    // httpController.addStream( "watch", officeraw);
-    // httpController.addStream( "watch", northwestraw);
+    httpController.addStream( "watch", southeastraw);
+    httpController.addStream( "watch", southwestraw);
+    httpController.addStream( "watch", backpatioraw);
+    httpController.addStream( "watch", frontentryraw);
+    httpController.addStream( "watch", officeraw);
+    httpController.addStream( "watch", northwestraw);
 
     httpController.addStream( "detect", sefilter);
     httpController.addStream( "detect", swfilter);
