@@ -64,9 +64,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	libfontconfig1-dev libv4l-dev wget
 
 ENV INSTALLDIR=/usr/local
-#RUN mkdir /src && cd /src && git clone https://github.com/dstarikov/ozonebase && 
-#RUN cd /src/ozonebase && git pull && ./ozone-build.sh
+RUN mkdir /src && cd /src && git clone https://github.com/dstarikov/ozonebase && 
+RUN cd /src/ozonebase && git pull && ./ozone-build.sh
 
-#ENV LD_LIBRARY_PATH=/usr/local/lib/
+ENV LD_LIBRARY_PATH=/usr/local/lib/
 ADD ./test_videos /media/test_videos
-#CMD cd /usr/local/bin && ./yolo_home_security
+CMD cd /usr/local/bin && ./yolo_home_security
