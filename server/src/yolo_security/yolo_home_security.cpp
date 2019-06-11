@@ -9,6 +9,7 @@
 #include "../processors/ozAVFilter.h"
 #include "../processors/ozMatrixVideo.h"
 #include "../protocols/ozHttpController.h"
+#include "../consumers/ozMp4FileOutput.h"
 #include "../processors/myYOLOv3.h"
 #include "../processors/myIdentityFilter.h"
 
@@ -33,12 +34,22 @@ int main( int argc, const char *argv[] )
     Application app;
 
     // Two RTSP sources 
-    AVInput southeastraw( "southeast", "rtsp://admin:starikovcamera@10.10.10.161/h264Preview_01_sub" );
-    AVInput southwestraw( "southwest", "rtsp://admin:starikovcamera@10.10.10.163/h264Preview_01_sub" );
-    AVInput backpatioraw( "backpatio", "rtsp://admin:starikovcamera@10.10.10.162/h264Preview_01_sub" );
-    AVInput frontentryraw( "frontentry", "rtsp://admin:starikovcamera@10.10.10.183/h264Preview_01_sub" );
-    AVInput officeraw( "office", "rtsp://admin:starikovcamera@10.10.10.185/h264Preview_01_sub" );
-    AVInput northwestraw( "northwest", "rtsp://admin:starikovcamera@10.10.10.186/h264Preview_01_sub" );
+    // AVInput southeastraw( "southeast", "rtsp://admin:starikovcamera@10.10.10.161/h264Preview_01_main" );
+    // AVInput southwestraw( "southwest", "rtsp://admin:starikovcamera@10.10.10.163/h264Preview_01_main" );
+    // AVInput backpatioraw( "backpatio", "rtsp://admin:starikovcamera@10.10.10.162/h264Preview_01_main" );
+    // AVInput frontentryraw( "frontentry", "rtsp://admin:starikovcamera@10.10.10.183/h264Preview_01_main" );
+    // AVInput officeraw( "office", "rtsp://admin:starikovcamera@10.10.10.185/h264Preview_01_main" );
+    // AVInput northwestraw( "northwest", "rtsp://admin:starikovcamera@10.10.10.186/h264Preview_01_main" );
+
+    Options recordedPlaybackOptions;
+    recordedPlaybackOptions.add("realtime", true);
+    recordedPlaybackOptions.add("loop", true);
+    AVInput southeastraw( "southeast", "/media/test_videos/southeast.mp4" , recordedPlaybackOptions);
+    AVInput southwestraw( "southwest", "/media/test_videos/southwest.mp4", recordedPlaybackOptions );
+    AVInput backpatioraw( "backpatio", "/media/test_videos/backpatio.mp4", recordedPlaybackOptions );
+    AVInput frontentryraw( "frontentry", "/media/test_videos/frontentry.mp4", recordedPlaybackOptions );
+    AVInput officeraw( "office", "/media/test_videos/office.mp4", recordedPlaybackOptions );
+    AVInput northwestraw( "northwest", "/media/test_videos/northwest.mp4", recordedPlaybackOptions );
 
     app.addThread( &southeastraw );
     app.addThread( &southwestraw );
