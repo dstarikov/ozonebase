@@ -4,19 +4,26 @@
 **CSE576 Final Project Instructions**
 The Dockerfile in this repository is configured to build a docker image using a Ubuntu18.04 base image with all of the necessary dependencies including CUDA and Darknet. It then clones the source and builds it within the image.
 
-NOTE: the Dockerfile is expecting a directory called test_videos containing six video files to be in the root repo directory.
+**NOTE:** the Dockerfile is expecting a directory called test_videos containing six video files to be in the root repo directory.
 I have shared the folder containing these videos to anyone on UW via Google Drive. 
 Download this folder before building the docker application: [test_videos](https://drive.google.com/drive/folders/15Nqs-HzkD9PUFRyD3ZwjGEFBcEDD9X5m?usp=sharing)
 
-NOTE: nvidia-docker2 is required for this application to work.
+**NOTE:** nvidia-docker2 is required for this application to work.
 Installation Instructions for [nvidia-docker2](https://github.com/NVIDIA/nvidia-docker)
 
 To build the application using the docker container:
+
 	`git clone https://github.com/dstarikov/ozonebase.git`
+
 	`cd ozonebase`
+
 	`mv <downloaded_test_videos_dir> test_videos`
+
 	`sudo docker build -t yolosecurity:v1 .`
+
 	`sudo docker run --runtime=nvidia -p9292:9292 -p9293:9293 yolosecurity:v1 .`
+
+
 
 **oZone is now MIT licensed**
 
