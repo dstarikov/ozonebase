@@ -27,6 +27,11 @@ To build the application using the docker container:
 	`sudo docker run --runtime=nvidia -p9292:9292 -p9293:9293 yolosecurity:v1 .`
 
 
+Once the application is running, open the file [yolo_home_security.html](https://github.com/dstarikov/ozonebase/blob/master/server/src/yolo_security/yolo_home_security.html) within a web browser.
+
+It will read the images over HTTP from the `yolo_home_security` application using the forwarded ports from the docker container.
+
+
 # Notice
 
 **oZone is now MIT licensed**
