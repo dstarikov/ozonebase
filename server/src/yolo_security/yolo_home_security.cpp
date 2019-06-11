@@ -101,21 +101,23 @@ int main( int argc, const char *argv[] )
     Listener listener;
     app.addThread( &listener );
 
-    HttpController httpController( "watch", 9292 );
-    httpController.addStream( "watch", southeastraw);
-    httpController.addStream( "watch", southwestraw);
-    httpController.addStream( "watch", backpatioraw);
-    httpController.addStream( "watch", frontentryraw);
-    httpController.addStream( "watch", officeraw);
-    httpController.addStream( "watch", northwestraw);
+    HttpController rawHttpController( "watch", 9292 );
+    rawHttpController.addStream( "watch", southeastraw);
+    rawHttpController.addStream( "watch", southwestraw);
+    rawHttpController.addStream( "watch", backpatioraw);
+    rawHttpController.addStream( "watch", frontentryraw);
+    rawHttpController.addStream( "watch", officeraw);
+    rawHttpController.addStream( "watch", northwestraw);
 
-    httpController.addStream( "detect", sefilter);
-    httpController.addStream( "detect", swfilter);
-    httpController.addStream( "detect", bpfilter);
-    httpController.addStream( "detect", fefilter);
-    httpController.addStream( "detect", ofilter);
-    httpController.addStream( "detect", nwfilter);
+    HttpController detectHttpController( "detect", 9293 );
+    detectHttpController.addStream( "detect", sefilter);
+    detectHttpController.addStream( "detect", swfilter);
+    detectHttpController.addStream( "detect", bpfilter);
+    detectHttpController.addStream( "detect", fefilter);
+    detectHttpController.addStream( "detect", ofilter);
+    detectHttpController.addStream( "detect", nwfilter);
     
-    listener.addController( &httpController );
+    listener.addController( &rawHttpController );
+    listener.addController( &detectHttpController );
     app.run();
 }
